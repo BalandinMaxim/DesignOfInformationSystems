@@ -1,1 +1,44 @@
-ER модель
+Тема: Платная поликлинника. 
+Построена ER модель, имеющая 3 таблицы: Клиенты (Clients), Врачи (Doctors), Журнал услуг (Service logs).Поля,доюавленные в таблицы отображены на рисунке в присоединенном файле
+
+Для визуализации ER модели использовался сайт dbdiagramms.
+Ссылка на опубликованную диаграмму: https://dbdocs.io/strona2003maxim/hospital?schema=public&view=table_structure&table=Clients
+Пароль для просмотра и редактирования (maxim16)
+
+Код создания таблиц и выполнения связи:
+
+//Создание таблицы Клиенты
+Table Clients {
+  client_id integer [primary key]
+  fullname varchar
+  phone_number str
+  male char 
+  email varchar
+  age integer
+  allergic_reactions varchar
+  document varchar
+}
+
+//Создание таблицы ЖурналУслуг
+Table ServiceLogs {
+  log_id integer [primary key]
+  client_id integer
+  doctor_id integer
+  name_log varchar
+  cost int
+  diagnosis varchar
+  }
+
+//Создание таблицы Врачи
+Table Doctors {
+  doctor_id integer [primary key]
+  fullname varchar
+  activity varchar
+  qualification varchar2
+  experience integer
+}
+
+//Отображение связи 1 ко многим
+Ref: ServiceLogs.client_id > Clients.client_id
+Ref: ServiceLogs.doctor_id > Doctors.doctor_id
+
