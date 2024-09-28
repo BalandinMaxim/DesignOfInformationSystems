@@ -71,7 +71,39 @@ class Client:
         if not isinstance(document, str) or not re.fullmatch(r'\d{4} \d{6}', document):
             raise ValueError('Невреные данные паспорта (документа).')
         return document
-        
+
+   # Вывод полной версии объекта 
+   @property
+   def full_version(self):
+       return (
+           self.get_fullname(), 
+           self.get_phone_number(), 
+           self.get_male(),
+           self.get_email(),
+           self.get_age(), 
+           self.get_allergic_reactions(),
+           self.get_document(),
+        )
+
+    # Вывод краткой версии объекта
+    @property
+    def short_version(self):
+        return (
+            self.get_fullname(), 
+            self.get_phone_number(), 
+            self.get_email(),
+            self.get_document(),
+        )
+
+    # Метод сравнения объектов на равенство (сравнение полей: id, имя, номер телефона, email)
+    def __eq__(self, other):
+        if isinstance(other, Client):
+            return (self.__client_id == other.__client_id and
+                    self.__fullname == other.__fullname and
+                    self.__phone_number == other.__phone_number and
+                    self.__email == other.__email)
+        return False
+
     # Getters
     def get_client_id(self):
         return self.__client_id
