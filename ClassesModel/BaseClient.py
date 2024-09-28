@@ -62,7 +62,7 @@ class Client:
 
     # Setters
     def set_id(self, id):
-        self._id = self.validate_client_id(id)
+        self._id = self.validate(id, self.validate_client_id)
   
     def set_fullname(self, fullname):
         self.__fullname = self.validate(fullname, self.validate_fullname)
