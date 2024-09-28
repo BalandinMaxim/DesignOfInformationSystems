@@ -1,4 +1,5 @@
 import re
+import json
 
 class Client:
     def __init__(self, client_id, fullname, phone_number, male, email, age, allergic_reactions, document):
@@ -11,6 +12,24 @@ class Client:
         self.__allergic_reactions = allergic_reactions 
         self.__document = document
 
+    # Классовый метод создания клиента из JSON
+    @classmethod
+    def from_json(data_json):
+        try:
+            data = json.loads(data_json)
+            return Client(
+                client_id=data['client_id'],
+                fullname=data['fullname'],
+                phone_number=data['phone_number'],
+                male=data['male'],
+                email=data['email'],
+                age=data['age'],
+                allergic_reactions=data['allergic_reactions'],
+                document=data['document'],
+            )
+        except Exception as e:
+            raise ValueError("Данные JSON не верны")
+            
     # Общий метод валидации
     @staticmethod
     def validate(value, validation_function):
