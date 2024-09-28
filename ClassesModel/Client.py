@@ -45,7 +45,7 @@ class Client(BaseClient):
         return age
 
     @staticmethod
-    def validate_allergic_reactions(document):
+    def validate_allergic_reactions(allergic_reactions):
         if not isinstance(allergic_reactions, str):
             raise ValueError('Аллергические реакции должны быть введены строкой.')
         return document
@@ -101,8 +101,3 @@ class Client(BaseClient):
 
     def set_allergic_reactions(self, allergic_reactions):
         self.__allergic_reactions = self.validate(allergic_reactions, self.validate_allergic_reactions)
-
-    def set_document(self, document):
-        self.__document = self.validate(document, self.validate_document)
-
-
