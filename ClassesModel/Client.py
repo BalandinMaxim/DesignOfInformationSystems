@@ -4,7 +4,7 @@ from ClassesModel.BaseClient import BaseClient
 
 class Client(BaseClient):
     def __init__(self, fullname, phone_number, male, email, age, allergic_reactions, document):
-        super(Client, self).__init__(__fullname=__fullname, __phone_number=__phone_number, __email=__email, __document=__document)
+        super(Client, self).__init__(fullname=fullname, phone_number=phone_number, email=email, document=document)
         self.set_male(male)
         self.set_age(age)
         self.set_allergic_reactions(allergic_reactions)
