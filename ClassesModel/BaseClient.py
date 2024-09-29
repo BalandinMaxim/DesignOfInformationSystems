@@ -1,6 +1,6 @@
 import re
 
-class Client:
+class BaseClient:
     def __init__(self, client_id, fullname, phone_number, email, document):
         self.set_id(client_id)
         self.set_fullname(fullname)
