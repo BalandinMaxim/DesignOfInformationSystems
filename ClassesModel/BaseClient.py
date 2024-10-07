@@ -44,6 +44,21 @@ class BaseClient:
             raise ValueError('Невреные данные паспорта (документа).')
         return document
 
+
+     # Метод сравнения объектов на равенство (сравнение полей: ФИО, документ)
+    def __eq__(self, other):
+        if self.get_fullname() != other.get_fullname() and
+           self.get_document() != other.get_document():
+               return False
+        return True
+
+    def __hash__(self):
+        return hash(self.get_fullname(), self.get_document())
+    
+    # Метод  вывода str
+    def __str__(self):
+        return f"Name: {self.get_fullname()}, Phone number: {self.get_phone_number()}, E-mail: {self.get_email()}, Passport: {self.get_document()}"
+    
     # Getters
     def get_id(self):
         return self.__client_id
