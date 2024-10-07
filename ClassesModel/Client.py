@@ -73,13 +73,11 @@ class Client(BaseClient):
             self.get_document(),
         )
 
-    # Метод сравнения объектов на равенство (сравнение полей: id, имя, номер телефона, email)
+    # Метод сравнения объектов на равенство (сравнение полей: ФИО, документ)
     def __eq__(self, other):
         if isinstance(other, Client):
-            return (self.__client_id == other.__client_id and
-                    self.__fullname == other.__fullname and
-                    self.__phone_number == other.__phone_number and
-                    self.__email == other.__email)
+            return (self.__fullname == other.__fullname and
+                    self.__document == other.__document)
         return False
 
     # Getters
