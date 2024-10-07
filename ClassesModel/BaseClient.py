@@ -40,7 +40,7 @@ class BaseClient:
 
     @staticmethod
     def validate_document(document):
-        if not isinstance(document, str):
+        if not isinstance(document, str) or not re.fullmatch(r'^\d{4}\s\d{6}$', document):
             raise ValueError('Невреные данные паспорта (документа).')
         return document
 
