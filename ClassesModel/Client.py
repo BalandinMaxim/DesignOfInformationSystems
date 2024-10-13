@@ -1,6 +1,6 @@
 import re
 import json
-from ClassesModel.BaseClient import BaseClient
+from BaseClient import BaseClient
 
 class Client(BaseClient):
     def __init__(self, fullname, phone_number, male, email, age, allergic_reactions, document):
@@ -25,7 +25,7 @@ class Client(BaseClient):
             )
         except Exception as e:
             raise ValueError("Данные JSON не верны")
-            
+
     # Общий метод валидации
     @staticmethod
     def validate(value, validation_function):
@@ -48,37 +48,41 @@ class Client(BaseClient):
     def validate_allergic_reactions(allergic_reactions):
         if not isinstance(allergic_reactions, str):
             raise ValueError('Аллергические реакции должны быть введены строкой.')
-        return document
+            return document
 
-   # Вывод полной версии объекта 
-   @property
-   def full_version(self):
-       return (
-           self.get_fullname(), 
-           self.get_phone_number(), 
-           self.get_male(),
-           self.get_email(),
-           self.get_age(), 
-           self.get_allergic_reactions(),
-           self.get_document(),
+    # Вывод полной версии объекта
+    @property
+    def full_version(self):
+        return (
+            self.get_fullname(),
+            self.get_phone_number(),
+            self.get_male(),
+            self.get_email(),
+            self.get_age(),
+            self.get_allergic_reactions(),
+            self.get_document(),
         )
 
     # Вывод краткой версии объекта
+
+
     @property
     def short_version(self):
         return (
-            self.get_fullname(), 
-            self.get_phone_number(), 
-            self.get_email(),
-            self.get_document(),
+        self.get_fullname(),
+        self.get_phone_number(),
+        self.get_email(),
+        self.get_document(),
         )
 
     # Getters
     def get_male(self):
         return self.__male
 
+
     def get_age(self):
         return self.__age
+
 
     def get_allergic_reactions(self):
         return self.__allergic_reactions
@@ -87,8 +91,10 @@ class Client(BaseClient):
     def set_male(self, male):
         self.__male = self.validate(male, self.validate_male)
 
+
     def set_age(self, age):
         self.__age = self.validate(age, self.validate_age)
+
 
     def set_allergic_reactions(self, allergic_reactions):
         self.__allergic_reactions = self.validate(allergic_reactions, self.validate_allergic_reactions)
