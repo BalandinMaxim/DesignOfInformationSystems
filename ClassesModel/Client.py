@@ -26,29 +26,24 @@ class Client(BaseClient):
         except Exception as e:
             raise ValueError("Данные JSON не верны")
 
-    # Общий метод валидации
-    @staticmethod
-    def validate(value, validation_function):
-        return validation_function(value)
-
     # Статические методы валидации
     @staticmethod
     def validate_male(male):
         if male not in ('М', 'Ж'):
-            raise ValueError("Пол должен быть 'М' или 'Ж'.")
-        return male
+            return False
+        return True
 
     @staticmethod
     def validate_age(age):
         if not isinstance(age, int) or age < 0:
-            raise ValueError("Возрас не может быть отрицательным значением.")
-        return age
+            return False
+        return True
 
     @staticmethod
     def validate_allergic_reactions(allergic_reactions):
         if not isinstance(allergic_reactions, str):
-            raise ValueError('Аллергические реакции должны быть введены строкой.')
-            return document
+            return False
+        return True
 
     # Вывод полной версии объекта
     @property
@@ -89,12 +84,18 @@ class Client(BaseClient):
 
     # Setters
     def set_male(self, male):
-        self.__male = self.validate(male, self.validate_male)
+        if super().validate(male, self.validate_male):
+            raise ValueError("Пол должен быть 'М' или 'Ж'.")
+        self.__male = male
 
 
     def set_age(self, age):
-        self.__age = self.validate(age, self.validate_age)
+        if super().validate(age, self.validate_age):
+            raise ValueError("Возрас не может быть отрицательным значением.")
+        self.__age = age
 
 
     def set_allergic_reactions(self, allergic_reactions):
-        self.__allergic_reactions = self.validate(allergic_reactions, self.validate_allergic_reactions)
+        if super().validate(allergic_reactions, self.validate_allergic_reactions):
+            raise ValueError('Аллергические реакции должны быть введены строкой.')
+        self.__allergic_reactions = allergic_reactions
