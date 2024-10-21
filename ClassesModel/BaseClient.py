@@ -81,23 +81,23 @@ class BaseClient:
     def set_fullname(self, fullname):
         if self.validate(fullname, self.validate_fullname) == False:
             raise ValueError("ФИО введено неверно (не может быть пустым значением).")
-        self.__fullname = self.validate(fullname, self.validate_fullname)
+        self.__fullname = fullname
             
 
 
     def set_phone_number(self, phone_number):
         if self.validate(phone_number, self.validate_phone_number) == False:
             raise ValueError('Номер телефона введен неверно.')
-        self.__phone_number = self.validate(phone_number, self.validate_phone_number)
+        self.__phone_number = phone_number
 
 
     def set_email(self, email):
         if self.validate(email, self.validate_email) == False:
             raise ValueError("Электронная поста введена неверно.")
-        self.__email = self.validate(email, self.validate_email)
+        self.__email = email
 
 
     def set_document(self, document):
         if self.validate(document, self.validate_document) == False:
             raise ValueError('Невреные данные паспорта (документа).')
-        self.__document = self.validate(document, self.validate_document)
+        self.__document = document
