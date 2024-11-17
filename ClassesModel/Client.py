@@ -3,7 +3,7 @@ import json
 from BaseClient import BaseClient
 
 class Client(BaseClient):
-    def __init__(self, id = None, fullname, phone_number, male, email, age, allergic_reactions, document):
+    def __init__(self, fullname, phone_number, male, email, age, allergic_reactions, document, id = None):
         super(Client, self).__init__(id = id, fullname=fullname, phone_number=phone_number, email=email, document=document)
         self.set_male(male)
         self.set_age(age)
