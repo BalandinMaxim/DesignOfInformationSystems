@@ -1,3 +1,5 @@
+from ClientRepFile import ClientRepFile
+
 class ClientRepFileAdapter:
 
     def __init__(self, client_rep_file: ClientRepFile):
