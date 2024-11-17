@@ -2,7 +2,7 @@ import re
 
 
 class BaseClient:
-    def __init__(self, id = None, fullname, phone_number, email, document):
+    def __init__(self, fullname, phone_number, email, document, id = None):
         self.__id = id
         self.set_fullname(fullname)
         self.set_phone_number(phone_number)
