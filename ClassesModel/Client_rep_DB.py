@@ -11,18 +11,36 @@ class ClientRepDB:
         with self.db.get_cursor() as cursor:
             cursor.execute("SELECT * FROM client WHERE id = %s", (client_id,))
             result = cursor.fetchone()
-        return result
+        return {
+                "id": result[0],
+                "fullname": result[1],
+                "phone_number": result[2],
+                "male": result[3],
+                "email": result[4],
+                "age": result[5],
+                "allergic_reactions": result[6],
+                "document": result[7]
+            } if result else None
 
     def get_k_n_short_list(self, k, n):
         """Получить список из k элементов, начиная с n-го блока."""
         with self.db.get_cursor() as cursor:
-            offset = k * (n - 1)
             cursor.execute("""
-                SELECT id, fullname, phone_number FROM client
-                ORDER BY id LIMIT %s OFFSET %s
-            """, (k, offset))
+                SELECT id, fullname, phone_number, male, email, document FROM client
+                ORDER BY fullname, id LIMIT %s OFFSET %s
+            """, (k, n))
             result = cursor.fetchall()
-        return result
+        return [
+            {
+                "id": row[0],
+                "fullname": row[1],
+                "phone_number": row[2],
+                "male": row[3],
+                "email": row[4],
+                "document": row[5]
+            }
+            for row in result
+        ]
 
     def add(self, fullname, phone_number, male, email, age, allergic_reactions, document):
         """Добавить нового клиента."""
@@ -34,7 +52,7 @@ class ClientRepDB:
             """, (new_id, fullname, phone_number, male, email, age, allergic_reactions, document))
         return new_id
 
-    def update_by_id(self, client_id, fullname=None, phone_number=None, male=None, email=None, age=None, allergic_reactions=None, document=None):
+    def update_by_id(self, client_id, fullname=None, phone_number=None, male=None, email=None, document=None, age=None, allergic_reactions=None):
         """Обновить данные клиента по ID."""
         fields = []
         values = []
@@ -81,5 +99,4 @@ class ClientRepDB:
             cursor.execute("SELECT COUNT(*) FROM client")
             result = cursor.fetchone()
         return result[0]
-
 
