@@ -12,7 +12,7 @@ class DatabaseConnection:
 
     def _initialize(self, db_config):
         self.connection = psycopg2.connect(
-            dbname=db_config['dbname'],
+            database=db_config['dbname'],
             user=db_config['user'],
             password=db_config['password'],
             host=db_config['host'],
@@ -42,11 +42,11 @@ class DatabaseConnection:
         if not self.table_exists("client"):
             with self.get_cursor() as cursor:
                 cursor.execute("""
-                    CREATE TABLE client (
+                    CREATE TABLE IF NOT EXISTS client (
                         id UUID PRIMARY KEY,
                         fullname VARCHAR(255) NOT NULL,
                         phone_number VARCHAR(15) NOT NULL,
-                        male VARCHAR(1) CHECK (male IN ('м', 'ж')),
+                        male VARCHAR(1) CHECK (male IN ('М', 'Ж')),
                         email VARCHAR(255) NOT NULL,
                         age INTEGER CHECK (age > 0) NOT NULL,
                         allergic_reactions TEXT,
@@ -56,3 +56,5 @@ class DatabaseConnection:
                 print("Таблица 'client' успешно создана.")
         else:
             print("Таблица 'client' уже существует.")
+
+
