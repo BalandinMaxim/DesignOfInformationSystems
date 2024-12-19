@@ -1,7 +1,6 @@
 import psycopg2
 
 class DatabaseConnection:
-    """Класс для управления подключением к базе данных (Singleton)."""
     _instance = None
 
     def __new__(cls, db_config):
@@ -25,7 +24,6 @@ class DatabaseConnection:
         return self.connection.cursor()
 
     def table_exists(self, table_name):
-        """Проверяет, существует ли таблица в базе данных."""
         with self.get_cursor() as cursor:
             cursor.execute("""
                 SELECT EXISTS (
@@ -38,7 +36,6 @@ class DatabaseConnection:
         return result[0]
 
     def ensure_table_exists(self):
-        """Убеждается, что таблица client существует, и создает её при необходимости."""
         if not self.table_exists("client"):
             with self.get_cursor() as cursor:
                 cursor.execute("""
@@ -57,4 +54,33 @@ class DatabaseConnection:
         else:
             print("Таблица 'client' уже существует.")
 
+        if not self.table_exists("doctors"):
+            with self.get_cursor() as cursor:
+                cursor.execute("""
+                    CREATE TABLE IF NOT EXISTS doctors (
+                    id UUID PRIMARY KEY,
+                    fullname VARCHAR(255) NOT NULL UNIQUE,
+                    activity VARCHAR(255) NOT NULL,
+                    qualification VARCHAR(255) NOT NULL,
+                    experience INTEGER CHECK (experience > 0) NOT NULL
+                );
+                """)
+                print("Таблица 'Doctors' успешно создана.")
+        else:
+            print("Таблица 'Doctors' уже существует.")
 
+        if not self.table_exists("servicelogs"):
+            with self.get_cursor() as cursor:
+                cursor.execute("""
+                    CREATE TABLE IF NOT EXISTS ServiceLogs (
+                    log_id UUID PRIMARY KEY,
+                    client_id UUID REFERENCES client(id) ON DELETE CASCADE,
+                    doctor_id UUID REFERENCES Doctors(id) ON DELETE CASCADE,
+                    name_log VARCHAR(255) NOT NULL,
+                    cost INTEGER CHECK (cost > 0) NOT NULL,
+                    diagnosis VARCHAR(255) NOT NULL
+                );
+                """)
+                print("Таблица 'ServiceLogs' успешно создана.")
+        else:
+            print("Таблица 'ServiceLogs' уже существует.")
