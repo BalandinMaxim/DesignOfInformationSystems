@@ -1,6 +1,6 @@
-import re
 import json
 from BaseClient import BaseClient
+from SrviceLog import ServiceLog
 
 class Client(BaseClient):
     def __init__(self, fullname, phone_number, male, email, age, allergic_reactions, document, id = None):
@@ -8,6 +8,7 @@ class Client(BaseClient):
         self.set_male(male)
         self.set_age(age)
         self.set_allergic_reactions(allergic_reactions)
+        self.__service_logs = []
 
     # Классовый метод создания клиента из JSON
     @classmethod
@@ -29,7 +30,7 @@ class Client(BaseClient):
     # Статические методы валидации
     @staticmethod
     def validate_male(male):
-        if male not in ('М', 'Ж'):
+        if male not in ("М", "Ж"):
             return False
         return True
 
@@ -59,8 +60,6 @@ class Client(BaseClient):
         )
 
     # Вывод краткой версии объекта
-
-
     @property
     def short_version(self):
         return (
@@ -70,32 +69,46 @@ class Client(BaseClient):
         self.get_document(),
         )
 
+    def add_service_log(self, service_log):
+        if isinstance(service_log, ServiceLog):
+            self.__service_logs.append(service_log)
+        else:
+            raise TypeError("Ожидался экземпляр класса ServiceLog")
+
+    def delete_service_log(self, service_log):
+        if isinstance(service_log, ServiceLog):
+            self.__service_logs.remove(service_log)
+        else:
+            raise TypeError("Ожидался экземпляр класса ServiceLog")
+
     # Getters
     def get_male(self):
         return self.__male
 
-
     def get_age(self):
         return self.__age
-
 
     def get_allergic_reactions(self):
         return self.__allergic_reactions
 
+    def get_service_logs(self):
+        return self.__service_logs
+
     # Setters
     def set_male(self, male):
-        if super().validate(male, self.validate_male):
+        if super(Client, self).validate(male, self.validate_male) == False:
             raise ValueError("Пол должен быть 'М' или 'Ж'.")
         self.__male = male
 
-
     def set_age(self, age):
-        if super().validate(age, self.validate_age):
+        if super(Client, self).validate(age, self.validate_age) == False:
             raise ValueError("Возрас не может быть отрицательным значением.")
         self.__age = age
 
-
     def set_allergic_reactions(self, allergic_reactions):
-        if super().validate(allergic_reactions, self.validate_allergic_reactions):
+        if super(Client, self).validate(allergic_reactions, self.validate_allergic_reactions) == False:
             raise ValueError('Аллергические реакции должны быть введены строкой.')
         self.__allergic_reactions = allergic_reactions
+
+
+
