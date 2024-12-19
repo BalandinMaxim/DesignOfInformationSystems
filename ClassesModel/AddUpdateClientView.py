@@ -2,11 +2,11 @@ import tkinter as tk
 from tkinter import messagebox
 
 class AddUpdateClientView:
-    """Окно для добавления нового клиента"""
-    def __init__(self, root, controller, action, client_data=None):
+
+    def __init__(self, root, controller, action, client_id=None):
         self.controller = controller
         self.action = action
-        self.client_data = client_data
+        self.client_id = client_id
         self.root = root
 
         # Поля ввода данных
@@ -38,27 +38,27 @@ class AddUpdateClientView:
         self.allergic_entry = tk.Entry(root, width=30)
         self.allergic_entry.grid(row=6, column=1, padx=10, pady=5)
 
-        if client_data != None:
-            self.fullname_entry.insert(0, self.client_data['fullname'])
-            self.phone_entry.insert(0, self.client_data['phone_number'])
-            self.male_entry.insert(0, self.client_data['male'])
-            self.email_entry.insert(0, self.client_data['email'])
-            self.document_entry.insert(0, self.client_data['document'])
-            self.age_entry.insert(0, self.client_data['age'])
-            self.allergic_entry.insert(0, self.client_data['allergic_reactions'])
-
-        # Кнопка добавления клиента
-
         if action == "add":
             self.root.title("Добавить клиента")
             tk.Button(root, text="Добавить", command=self.add_update_client).grid(row=7, column=0, columnspan=2, pady=10)
         else:
             if action == "update":
+
+                client_data = self.controller.get_client_by_id(self.client_id)
+
+                if client_data != None:
+                    self.fullname_entry.insert(0, client_data['fullname'])
+                    self.phone_entry.insert(0, client_data['phone_number'])
+                    self.male_entry.insert(0, client_data['male'])
+                    self.email_entry.insert(0, client_data['email'])
+                    self.document_entry.insert(0, client_data['document'])
+                    self.age_entry.insert(0, client_data['age'])
+                    self.allergic_entry.insert(0, client_data['allergic_reactions'])
+
                 self.root.title("Редактирование клиента")
                 tk.Button(root, text="Сохранить изменения", command=self.add_update_client).grid(row=7, column=0, columnspan=2, pady=10)
 
     def add_update_client(self):
-        """Добавление клиента в модель через контроллер"""
         try:
             # Получаем данные из полей ввода
             fullname = self.fullname_entry.get().strip()
@@ -84,7 +84,7 @@ class AddUpdateClientView:
             else:
                 if self.action == "update":
                     self.controller.update_client(
-                        self.client_data['id'],
+                        self.client_id,
                         fullname=fullname,
                         phone_number=phone_number,
                         male=male,
@@ -95,8 +95,8 @@ class AddUpdateClientView:
                     )
                     messagebox.showinfo("Успех", "Данные клиента успешно обновлены!")
 
-            # Уведомляем пользователя об успешном добавлении
-            self.root.destroy()  # Закрываем окно добавления
+            # Уведомляем пользователя об успешном добавлении / изменении
+            self.root.destroy()
 
         except ValueError as e:
             # Показываем ошибки валидации
